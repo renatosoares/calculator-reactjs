@@ -30,7 +30,7 @@
             background-color: #fff;
             margin: 40px auto;
             max-width: 400px;
-            padding: 16px;  
+            padding: 16px;
             border-radius: 4px;
         }
 
@@ -62,31 +62,37 @@
     <title>Calculadora</title>
 </head>
 <body>
- 
-    <div id="root">
 
-    </div>
+    <div id="root"></div>
 
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel">
-        const Header = () => {
-            return (
-                <div class="header">
-                    Calculadora
-                </div>
-            );
-        }
+        const Header = () => <div class="header"> Calculadora </div>;
 
         const Calculator = () => {
+            const [display, setDisplay] = React.useState('');
+
             return (
                 <div class="calculator">
-                    <div class="display"></div>
+                    <div class="display">{display}</div>
                     <div class="keyboard">
-                        <button>7</button>
-                        <button>8</button>
+                        <button
+                            onClick={() => {
+                                setDisplay(display + '7');
+                            }}
+                        >
+                            7
+                        </button>
+                        <button
+                            onClick={() => {
+                                setDisplay(display + '8');
+                            }}
+                        >
+                            8
+                        </button>
                         <button>9</button>
                         <button>4</button>
                         <button>5</button>
@@ -100,19 +106,17 @@
             );
         }
 
-        const App = () => {
-            return (
-                <div>
-                    <Header />
-                    <Calculator />
-                </div>
-            );
-        }
+        const App = () => (
+            <div>
+                <Header />
+                <Calculator />
+            </div>
+        );
 
         ReactDOM.render(
             <App />,
             document.getElementById('root')
-        ); 
+        );
     </script>
 </body>
 </html>
