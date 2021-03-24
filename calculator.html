@@ -44,7 +44,7 @@
 
         .keyboard {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             grid-gap: 16px;
             font-size: 1.2rem;
             font-weight: bold;
@@ -94,29 +94,37 @@
 
         const Calculator = () => {
             const [display, setDisplay] = React.useState('');
-            const keyboard = [7,8,9,4,5,6,1,2,3,0];
+            const keyboard = [
+                7,8,9,'/','',
+                4,5,6,'*','',
+                1,2,3,'-','',
+                0,'.','+','=',
+            ];
 
-            const handleNumberClick = (value) => {
-                setDisplay(`${display}${value}`);
+            const handleClick = (value) => {
+                if (value === '=') {
+                    setDisplay(eval(display));
+                } else {
+                    setDisplay(`${display}${value}`);
+                }
             };
 
             return (
                 <div className="calculator">
                     <div className="display">{display}</div>
                     <div className="keyboard">
-                        {keyboard.map(value => (
-                            <Button
-                                key={value}
-                                value={value}
-                                onClick={handleNumberClick}
-                                className={value === 0 && "span2"}
-                            />
-                        ))}
-                        <Button
-                            value={"."}
-                            onClick={handleNumberClick}
-                            className="primary"
-                        />
+                        {keyboard.map(value => {
+                            const span2Class = value === 0 ? 'span2' : '';
+                            const primaryClass = isNaN(value) ? 'primary' : '';
+                            return (
+                                <Button
+                                    key={value}
+                                    value={value}
+                                    onClick={handleClick}
+                                    className={`${span2Class} ${primaryClass}`}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             );
