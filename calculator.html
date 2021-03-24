@@ -79,6 +79,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel">
+        const calcRegex = /^([0-9]|-|\+|\*|\/|\.)*$/;
         const Header = () => <div className="header"> Calculadora </div>;
 
         const Button = ({ value, onClick, className }) => (
@@ -122,7 +123,17 @@
 
             return (
                 <div className="calculator">
-                    <div className="display">{display}</div>
+                    <input
+                        type="text"
+                        className="display"
+                        value={display}
+                        onChange={event => {
+                            const { value } = event.target;
+                            if (calcRegex.test(value)) {
+                                setDisplay(value);
+                            }
+                        }}
+                    />
                     <div className="keyboard">
                         {keyboard.map(value => {
                             const span2Class = value === 0 ? 'span2' : '';
