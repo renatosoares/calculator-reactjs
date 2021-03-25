@@ -71,6 +71,16 @@
         .error {
             color: red;
         }
+
+        .history {
+            padding: 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            height: 100px;
+            overflow-y: scroll;
+            margin-bottom: 8px;
+            text-align: right;
+        }
     </style>
     <title>Calculadora</title>
 </head>
@@ -92,7 +102,7 @@
         ];
 
         const advancedKeys = [
-            '(',')',
+            '(',')','Hist',
         ];
 
         const Header = () => <div className="header"> Calculadora </div>;
@@ -113,8 +123,9 @@
             // data. hooks.
             const [display, setDisplay] = React.useState('');
             const [error, setError] = React.useState();
-            const [showAd, toggleAd] = React.useState(false);
+            const [showAd, toggleAd] = React.useState(true);
             const [history, setHistory] = React.useState([]);
+            const [showHist, toggleHist] = React.useState(true);
 
             // watch display. Side effect
             React.useEffect(() => {
@@ -125,8 +136,12 @@
 
             const doTheMath = () => {
                 try {
-                    setHistory([].concat(history, display));
-                    setDisplay('' + eval(display));
+                    const result = eval(display);
+                    setHistory([].concat(history, {
+                        calculation: display,
+                        result,
+                    }));
+                    setDisplay(`${result}`);
                 } catch (err) {
                     setError(`invalid expression: ${err.message}`);
                 }
@@ -147,6 +162,10 @@
                         break;
                     case 'Ad':
                         toggleAd(!showAd);
+                        toggleHist(false);
+                        break;
+                    case 'Hist':
+                        toggleHist(!showHist);
                         break;
                     default:
                         setDisplay(`${display}${value}`);
@@ -170,6 +189,13 @@
 
             return (
                 <div className="calculator">
+                    { showHist && (
+                        <div className="history">
+                            { history.map(({calculation, result}) => (
+                                <p>{ `${calculation} = ${result}` }</p>
+                            ))}
+                        </div>
+                    )}
                     <input
                         type="text"
                         className="display"
