@@ -114,6 +114,7 @@
             const [display, setDisplay] = React.useState('');
             const [error, setError] = React.useState();
             const [showAd, toggleAd] = React.useState(false);
+            const [history, setHistory] = React.useState([]);
 
             // watch display. Side effect
             React.useEffect(() => {
@@ -124,6 +125,7 @@
 
             const doTheMath = () => {
                 try {
+                    setHistory([].concat(history, display));
                     setDisplay('' + eval(display));
                 } catch (err) {
                     setError(`invalid expression: ${err.message}`);
